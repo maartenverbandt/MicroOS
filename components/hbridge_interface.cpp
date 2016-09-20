@@ -6,7 +6,7 @@ HBridgeInterface::HBridgeInterface(Sensor1D *battery_voltage_sensor, uint8_t ID)
 	//do nothing
 }
 
-HBridgeInterface::HBridgeInterface(int battery_voltage, uint8_t ID) :
+HBridgeInterface::HBridgeInterface(int16_t battery_voltage, uint8_t ID) :
 	ComponentInterface(ID), _battery_voltage_sensor(new Sensor1D)
 {
 	_battery_voltage_sensor->setRawValue(battery_voltage);
@@ -21,7 +21,7 @@ bool HBridgeInterface::init()
 	return true;
 }
 
-void HBridgeInterface::setBridgeVoltage(int bridge_voltage)
+void HBridgeInterface::setBridgeVoltage(int16_t bridge_voltage)
 {
 	uint32_t battery_voltage = _battery_voltage_sensor->peekCalibratedValue();
 	_polarity = (bridge_voltage>=0);
@@ -51,7 +51,7 @@ Sensor1D* HBridgeInterface::batteryVoltageSensor()
 
 int16_t HBridgeInterface::getBridgeVoltage()
 {
-	int bridge_voltage = (_battery_voltage_sensor->peekCalibratedValue()*_pwm)/255;
+	int16_t bridge_voltage = (_battery_voltage_sensor->peekCalibratedValue()*_pwm)/255;
 	if(_polarity)
 		return bridge_voltage;
 	else

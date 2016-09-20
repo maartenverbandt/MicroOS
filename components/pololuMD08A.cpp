@@ -6,7 +6,7 @@ PololuMD08A::PololuMD08A(uint8_t pin_in1, uint8_t pin_pwm, Sensor1D *battery_vol
 	//do nothing
 }
 
-PololuMD08A::PololuMD08A(uint8_t pin_in1, uint8_t pin_pwm, int battery_voltage, uint8_t ID):
+PololuMD08A::PololuMD08A(uint8_t pin_in1, uint8_t pin_pwm, int16_t battery_voltage, uint8_t ID):
 	HBridgeInterface(battery_voltage, ID), _pin_in1(pin_in1), _pin_in2(0xFF), _pin_pwm(pin_pwm)
 {
 	//do nothing
@@ -18,7 +18,7 @@ PololuMD08A::PololuMD08A(uint8_t pin_in1, uint8_t pin_in2, uint8_t pin_pwm, Sens
 	//do nothing
 }
 
-PololuMD08A::PololuMD08A(uint8_t pin_in1, uint8_t pin_in2, uint8_t pin_pwm, int battery_voltage, uint8_t ID):
+PololuMD08A::PololuMD08A(uint8_t pin_in1, uint8_t pin_in2, uint8_t pin_pwm, int16_t battery_voltage, uint8_t ID):
 	HBridgeInterface(battery_voltage, ID), _pin_in1(pin_in1), _pin_in2(pin_in2), _pin_pwm(pin_pwm)
 {
 	//do nothing

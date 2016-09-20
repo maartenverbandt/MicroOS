@@ -9,7 +9,7 @@ private:
 	Sensor1D* _sensor;
 	uint32_t _last_update;
 
-	int _raw_value_old;
+	int32_t _raw_value_old;
 	const float _alpha;
 
 public:

@@ -9,7 +9,7 @@ protected:
 	int32_t _raw_value;
 	float _calibrated_value;
 	float _scale;
-	int _offset;
+	int32_t _offset;
 
 public:
 	Sensor1D(uint8_t ID = 0);
@@ -19,14 +19,14 @@ public:
 	int32_t peekRawValue();
 	float peekCalibratedValue();
 
-	void setRawValue(int raw_value);
+	void setRawValue(int32_t raw_value);
 	void setCalibratedValue(float calibrated_value);
 
 	void setScale(float scale);
-	void setOffset(int offset);
+	void setOffset(int32_t offset);
 
 	float getScale();
-	int getOffset();
+	int32_t getOffset();
 
 };
 

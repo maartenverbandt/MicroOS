@@ -10,20 +10,20 @@ typedef enum {
 
 class PololuMC33926 : public HBridgeInterface
 {
-	private:	
+	private:
 		const uint8_t _in1;
 		const uint8_t _in2;
 		const uint8_t _D1;
 		const uint8_t _D2;
 
 		void setOutputs();
-		
+
 	public:
 		PololuMC33926(uint8_t in1, uint8_t in2, Sensor1D *battery_voltage_sensor, uint8_t ID = 0);
-		PololuMC33926(uint8_t in1, uint8_t in2, int battery_voltage, uint8_t ID = 0);
+		PololuMC33926(uint8_t in1, uint8_t in2, int16_t battery_voltage, uint8_t ID = 0);
 		PololuMC33926(uint8_t in1, uint8_t in2, uint8_t D1, uint8_t D2, Sensor1D *battery_voltage_sensor, uint8_t ID = 0);
-		PololuMC33926(uint8_t in1, uint8_t in2, uint8_t D1, uint8_t D2, int battery_voltage, uint8_t ID = 0);
-		
+		PololuMC33926(uint8_t in1, uint8_t in2, uint8_t D1, uint8_t D2, int16_t battery_voltage, uint8_t ID = 0);
+
 		bool init();
 };
 

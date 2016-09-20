@@ -6,7 +6,7 @@ PololuMC33926::PololuMC33926(uint8_t in1, uint8_t in2, Sensor1D *battery_voltage
 	//do nothing
 }
 
-PololuMC33926::PololuMC33926(uint8_t in1, uint8_t in2, int battery_voltage, uint8_t ID) :
+PololuMC33926::PololuMC33926(uint8_t in1, uint8_t in2, int16_t battery_voltage, uint8_t ID) :
 	HBridgeInterface(battery_voltage, ID), _in1(in1), _in2(in2), _D1(0xFF), _D2(0xFF)
 {
 
@@ -19,7 +19,7 @@ PololuMC33926::PololuMC33926(uint8_t in1, uint8_t in2, uint8_t D1, uint8_t D2, S
 	//do nothing
 }
 
-PololuMC33926::PololuMC33926(uint8_t in1, uint8_t in2, uint8_t D1, uint8_t D2, int battery_voltage, uint8_t ID) :
+PololuMC33926::PololuMC33926(uint8_t in1, uint8_t in2, uint8_t D1, uint8_t D2, int16_t battery_voltage, uint8_t ID) :
 	HBridgeInterface(battery_voltage, ID), _in1(in1), _in2(in2), _D1(D1), _D2(D2)
 {
 	//do nothing
@@ -36,7 +36,7 @@ bool PololuMC33926::init()
 		analogWriteFrequency(_in2, 20000); //only works when compiling for teensy... TODO: set teensy flag
 #endif
 	}
-	
+
 	if(_D1!=0xFF){
 		pinMode(_D1, OUTPUT);
 #ifdef CORE_TEENSY
@@ -45,14 +45,14 @@ bool PololuMC33926::init()
 	}
 	else if(_D2!=0xFF){
 		pinMode(_D2, OUTPUT);
-#ifdef CORE_TEENSY		
+#ifdef CORE_TEENSY
 		analogWriteFrequency(_D2, 20000);
 #endif
 	}
-	
-#ifdef CORE_TEENSY				
+
+#ifdef CORE_TEENSY
 	analogWriteResolution(8);
-#endif		
+#endif
 
 	return _battery_voltage_sensor->init();
 }
@@ -77,7 +77,3 @@ void PololuMC33926::setOutputs()
 		}
 	}
 }
-
-
-
-

@@ -18,10 +18,10 @@ class HBridgeInterface : public ComponentInterface
 
 	public:
 		HBridgeInterface(Sensor1D *battery_voltage_sensor, uint8_t ID = 0);
-		HBridgeInterface(int battery_voltage, uint8_t ID = 0);
+		HBridgeInterface(int16_t battery_voltage, uint8_t ID = 0);
 
 		virtual bool init() = 0;
-		void setBridgeVoltage(int bridge_voltage);		//set bridge voltage
+		void setBridgeVoltage(int16_t bridge_voltage);		//set bridge voltage
 
 		Sensor1D *batteryVoltageSensor();
 		int16_t getBridgeVoltage();

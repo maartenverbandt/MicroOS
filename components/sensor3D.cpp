@@ -10,12 +10,12 @@ Sensor3D::Sensor3D(const uint8_t ID) :
 	//do nothing
 }
 
-int* Sensor3D::readRawValue()
+int32_t* Sensor3D::readRawValue()
 {
 	return _raw_value;
 }
 
-int* Sensor3D::readCalibratedValue()
+int32_t* Sensor3D::readCalibratedValue()
 {
 	this->readRawValue();
 	for(uint8_t k=0;k<3;k++){
@@ -24,24 +24,24 @@ int* Sensor3D::readCalibratedValue()
 	return _calibrated_value;
 }
 
-int* Sensor3D::peekRawValue()
+int32_t* Sensor3D::peekRawValue()
 {
 	return _raw_value;
 }
 
-int* Sensor3D::peekCalibratedValue()
+int32_t* Sensor3D::peekCalibratedValue()
 {
 	return _calibrated_value;
 }
 
-void Sensor3D::setRawValue(int raw_value_x, int raw_value_y, int raw_value_z)
+void Sensor3D::setRawValue(int32_t raw_value_x, int32_t raw_value_y, int32_t raw_value_z)
 {
 	_raw_value[0] = raw_value_x;
 	_raw_value[1] = raw_value_y;
 	_raw_value[2] = raw_value_z;
 }
 
-void Sensor3D::setCalibratedValue(int calibrated_value_x, int calibrated_value_y, int calibrated_value_z)
+void Sensor3D::setCalibratedValue(int32_t calibrated_value_x, int32_t calibrated_value_y, int32_t calibrated_value_z)
 {
 	_calibrated_value[0] = calibrated_value_x;
 	_calibrated_value[1] = calibrated_value_y;
@@ -55,7 +55,7 @@ void Sensor3D::setScale(float scale_x, float scale_y, float scale_z)
 	_scale[2] = scale_z;
 }
 
-void Sensor3D::setOffset(int offset_x, int offset_y, int offset_z)
+void Sensor3D::setOffset(int32_t offset_x, int32_t offset_y, int32_t offset_z)
 {
 	_offset[0] = offset_x;
 	_offset[1] = offset_y;
@@ -67,7 +67,7 @@ float* Sensor3D::getScale()
 	return _scale;
 }
 
-int* Sensor3D::getOffset()
+int32_t* Sensor3D::getOffset()
 {
 	return _offset;
 }

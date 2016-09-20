@@ -27,7 +27,7 @@ float Sensor1D::peekCalibratedValue()
 	return _calibrated_value;
 }
 
-void Sensor1D::setRawValue(int raw_value)
+void Sensor1D::setRawValue(int32_t raw_value)
 {
 	_raw_value = raw_value;
 }
@@ -42,7 +42,7 @@ void Sensor1D::setScale(float scale)
 	_scale = scale;
 }
 
-void Sensor1D::setOffset(int offset)
+void Sensor1D::setOffset(int32_t offset)
 {
 	_offset = offset;
 }
@@ -52,7 +52,7 @@ float Sensor1D::getScale()
 	return _scale;
 }
 
-int Sensor1D::getOffset()
+int32_t Sensor1D::getOffset()
 {
 	return _offset;
 }
