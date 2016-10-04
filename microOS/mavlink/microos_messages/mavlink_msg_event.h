@@ -1,17 +1,17 @@
 // MESSAGE EVENT PACKING
 
-#define MAVLINK_MSG_ID_EVENT 5
+#define MAVLINK_MSG_ID_EVENT 4
 
 typedef struct __mavlink_event_t
 {
- uint16_t type; ///< Event identifier. 0-127 are reserved for microOS. User-specific events should be higher than 128.
+ uint16_t type; ///< Event identifier. 0-1000 are reserved for microOS. User-specific events should be higher than 1000.
 } mavlink_event_t;
 
 #define MAVLINK_MSG_ID_EVENT_LEN 2
-#define MAVLINK_MSG_ID_5_LEN 2
+#define MAVLINK_MSG_ID_4_LEN 2
 
 #define MAVLINK_MSG_ID_EVENT_CRC 133
-#define MAVLINK_MSG_ID_5_CRC 133
+#define MAVLINK_MSG_ID_4_CRC 133
 
 
 
@@ -29,7 +29,7 @@ typedef struct __mavlink_event_t
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param type Event identifier. 0-127 are reserved for microOS. User-specific events should be higher than 128.
+ * @param type Event identifier. 0-1000 are reserved for microOS. User-specific events should be higher than 1000.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_event_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
@@ -61,7 +61,7 @@ static inline uint16_t mavlink_msg_event_pack(uint8_t system_id, uint8_t compone
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param type Event identifier. 0-127 are reserved for microOS. User-specific events should be higher than 128.
+ * @param type Event identifier. 0-1000 are reserved for microOS. User-specific events should be higher than 1000.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_event_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
@@ -119,7 +119,7 @@ static inline uint16_t mavlink_msg_event_encode_chan(uint8_t system_id, uint8_t 
  * @brief Send a event message
  * @param chan MAVLink channel to send the message
  *
- * @param type Event identifier. 0-127 are reserved for microOS. User-specific events should be higher than 128.
+ * @param type Event identifier. 0-1000 are reserved for microOS. User-specific events should be higher than 1000.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -186,7 +186,7 @@ static inline void mavlink_msg_event_send_buf(mavlink_message_t *msgbuf, mavlink
 /**
  * @brief Get field type from event message
  *
- * @return Event identifier. 0-127 are reserved for microOS. User-specific events should be higher than 128.
+ * @return Event identifier. 0-1000 are reserved for microOS. User-specific events should be higher than 1000.
  */
 static inline uint16_t mavlink_msg_event_get_type(const mavlink_message_t* msg)
 {

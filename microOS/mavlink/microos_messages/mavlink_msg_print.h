@@ -1,6 +1,6 @@
 // MESSAGE PRINT PACKING
 
-#define MAVLINK_MSG_ID_PRINT 6
+#define MAVLINK_MSG_ID_PRINT 5
 
 typedef struct __mavlink_print_t
 {
@@ -8,10 +8,10 @@ typedef struct __mavlink_print_t
 } mavlink_print_t;
 
 #define MAVLINK_MSG_ID_PRINT_LEN 32
-#define MAVLINK_MSG_ID_6_LEN 32
+#define MAVLINK_MSG_ID_5_LEN 32
 
 #define MAVLINK_MSG_ID_PRINT_CRC 107
-#define MAVLINK_MSG_ID_6_CRC 107
+#define MAVLINK_MSG_ID_5_CRC 107
 
 #define MAVLINK_MSG_PRINT_FIELD_TEXT_LEN 32
 

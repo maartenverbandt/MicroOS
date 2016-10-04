@@ -1,6 +1,6 @@
 // MESSAGE THREAD_INFO PACKING
 
-#define MAVLINK_MSG_ID_THREAD_INFO 2
+#define MAVLINK_MSG_ID_THREAD_INFO 1
 
 typedef struct __mavlink_thread_info_t
 {
@@ -15,10 +15,10 @@ typedef struct __mavlink_thread_info_t
 } mavlink_thread_info_t;
 
 #define MAVLINK_MSG_ID_THREAD_INFO_LEN 22
-#define MAVLINK_MSG_ID_2_LEN 22
+#define MAVLINK_MSG_ID_1_LEN 22
 
 #define MAVLINK_MSG_ID_THREAD_INFO_CRC 215
-#define MAVLINK_MSG_ID_2_CRC 215
+#define MAVLINK_MSG_ID_1_CRC 215
 
 
 
