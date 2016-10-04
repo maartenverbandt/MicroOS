@@ -58,7 +58,7 @@ void MavlinkCommunicator::sendThreadInfo(uint8_t ID, char* name, uint8_t priorit
 void MavlinkCommunicator::sendGPIO()
 {
 	mavlink_message_t msg;
-	mavlink_msg_gpio_pack(_id, 0, &msg,  millis(), 0, System.getGPoutFloat(), System.getGPoutInt());
+	mavlink_msg_gpio_pack(_id, 0, &msg,  millis(), System.getGPoutFloat(), System.getGPoutInt());
 
 	sendMessage(msg);
 }
