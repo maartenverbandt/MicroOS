@@ -6,18 +6,26 @@
 #include "channel.h"
 #include "mavlink_protocol.h"
 
+#if defined(__AVR_ATmega328P__)
+	#define SINGLE_CHANNEL
+	#define NUMBER_OF_CHANNELS	1
+#else
+	#define MULTI_CHANNEL
+	#define NUMBER_OF_CHANNELS	2	
+#endif
+
 class MavlinkCommunicator : public CommunicatorInterface
 {
 protected:
 	const uint8_t _id;
 	const uint8_t _type;
-	Channel _channels[2];
+	Channel _channels[NUMBER_OF_CHANNELS];
 
 	virtual void sendMessage(mavlink_message_t &msg);
 	virtual bool handleMessage(mavlink_message_t &msg);
 
 public:
-	MavlinkCommunicator(const uint8_t id, HALBase *hal, const uint8_t type = 0);
+	MavlinkCommunicator(const uint8_t id, HALBase *hal, const uint8_t type = 20);
 
 	virtual void init();
 	virtual void receive();

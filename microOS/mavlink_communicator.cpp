@@ -3,24 +3,28 @@
 MavlinkCommunicator::MavlinkCommunicator(const uint8_t id, HALBase *hal, const uint8_t type) :
 	_id(id),
 	_type(type),
+#ifdef SINGLE_CHANNEL
+	_channels({Channel(hal->getPrimarySerial(), new MavlinkProtocol)})
+#else
 	_channels({Channel(hal->getPrimarySerial(), new MavlinkProtocol),
 			   Channel(hal->getSecondarySerial(), new MavlinkProtocol)})
+#endif
 {
 	//do nothing
 }
 
 void MavlinkCommunicator::init()
 {
-	for(uint8_t k=0;k<2;k++){
+	for(uint8_t k=0;k<NUMBER_OF_CHANNELS;k++){
 		_channels[k].start();
 	}
 }
 
 void MavlinkCommunicator::receive()
 {
-	for(uint8_t k=0;k<2;k++){
+	for(uint8_t k=0;k<NUMBER_OF_CHANNELS;k++){
 		while(_channels[k].receive()){
-			System.print("Port "); System.print(k); System.print(": ");
+			//System.print("Port "); System.print(k); System.print(": ");
 			handleMessage(*reinterpret_cast<mavlink_message_t*>(_channels[k].getMessage()));
 		}
 	}
@@ -28,7 +32,7 @@ void MavlinkCommunicator::receive()
 
 void MavlinkCommunicator::sendMessage(mavlink_message_t &msg)
 {
-	for(uint8_t k=0;k<2;k++){
+	for(uint8_t k=0;k<NUMBER_OF_CHANNELS;k++){
 		_channels[k].send(&msg);
 	}
 }
@@ -83,7 +87,7 @@ void MavlinkCommunicator::sendEvent(uint16_t event)
 void MavlinkCommunicator::handleEvent(uint16_t event)
 {
 	//put some microOS related events here
-	switch(event){
+	/*switch(event){
 		case 1000:
 			System.println("Button 1 pressed.");
 			break;
@@ -99,7 +103,7 @@ void MavlinkCommunicator::handleEvent(uint16_t event)
 		case 1003:
 			System.println("Button 4 pressed.");
 			break;
-	}
+	}*/
 }
 
 void MavlinkCommunicator::sendPrint(const char *text)
@@ -112,7 +116,7 @@ void MavlinkCommunicator::sendPrint(const char *text)
 
 bool MavlinkCommunicator::handleMessage(mavlink_message_t &msg)
 {
-	System.println(msg.msgid);
+	//System.println(msg.msgid);
 	switch(msg.msgid){
 		case MAVLINK_MSG_ID_GPIO:{
 			mavlink_gpio_t gpio;
