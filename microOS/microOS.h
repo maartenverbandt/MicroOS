@@ -7,7 +7,6 @@
 #include "WProgram.h"
 #endif
 
-#include <Wire.h>
 #include <Print.h>
 //#include <SPI.h>
 //#include "eeprom_m.h"

@@ -80,12 +80,6 @@ void MicroOS::configure(uint8_t config)
 
 void MicroOS::start(const start_t mode)
 {
-	//TODO: Test spi begin/enable
-	if((_config & MICROOS_I2C_ENABLE) != 0)
-		Wire.begin();
-	/*if((config & MICROOS_SPI_ENABLE) != 0)
-		SPI.begin();*/
-
 	// Fire up hal and communicator
 	if(_hal==NULL)
 		_hal = new HALBase();
