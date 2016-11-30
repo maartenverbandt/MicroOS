@@ -30,6 +30,8 @@
 	#define MICROOS_PRINT_BUFFER_SIZE			32
 	#define MICROOS_DEBUG_FLOAT_SIZE			4
 	#define MICROOS_DEBUG_INT_SIZE				2
+	#define MICROOS_NOPRINT
+	//#define MICROOS_NOPRINTBUFFER
 #else
 	#define MICROOS_PRINT_BUFFER_SIZE			128
 	#define MICROOS_DEBUG_FLOAT_SIZE			8
@@ -66,8 +68,11 @@ typedef enum system_run_t {
 /*
 	All static members to ensure there is only one copy of the OS!
 */
-
-class MicroOS : public Print
+#ifndef MICROOS_NOPRINT
+	class MicroOS : public Print
+#else
+	class MicroOS
+#endif
 {
 private:
 	system_info_t			_system_info;
@@ -76,12 +81,14 @@ private:
 	int32_t					_gpin_int[MICROOS_DEBUG_INT_SIZE];
 	float					_gpout_float[MICROOS_DEBUG_FLOAT_SIZE];
 	int32_t					_gpout_int[MICROOS_DEBUG_INT_SIZE];
+	
+#ifndef MICROOS_NOPRINT
 	char					_print_buffer[MICROOS_PRINT_BUFFER_SIZE];
 	uint8_t					_print_buffer_head;
 	uint8_t					_print_buffer_tail;
-	
     size_t write(const uint8_t);
     size_t write(const uint8_t *buffer, size_t size);
+#endif
 
 	uint8_t					_thread_count; 
 	uint8_t					_next_thread;	
@@ -114,7 +121,13 @@ public:
 
 	void sendSystemRequest(uint8_t system_request);
 	void handleSystemRequest(void);
+
+#ifndef MICROOS_NOPRINT
 	void write();
+#else
+	void println(const char *text);
+	void println(const __FlashStringHelper *text);
+#endif
 	
 	float* getGPinFloat(void);
 	int32_t* getGPinInt(void);

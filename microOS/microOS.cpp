@@ -3,22 +3,30 @@
 MicroOS System;
 
 MicroOS::MicroOS():
+#ifndef MICROOS_NOPRINT
 	Print(),
+#endif
 	_system_info(NOINFO),
 	_system_request(NOREQUEST),
-	_gpin_float({0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f}),
-	_gpin_int({0,0,0,0}),
-	_gpout_float({0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f}),
-	_gpout_int({0,0,0,0}),
+#ifndef MICROOS_NOPRINT
 	_print_buffer_head(0),
 	_print_buffer_tail(0),
+#endif
 	_thread_count(0),
 	_next_thread(0),
 	_scheduled_thread(0),
 	_config(0),
 	_slowhook_splitcounter(0)
 {
-	//do nothing
+	int k;
+	for(k=0;k<MICROOS_DEBUG_FLOAT_SIZE;k++){
+		_gpin_float[k] = 0.0f;
+		_gpout_float[k] = 0.0f;
+	}
+	for(k=0;k<MICROOS_DEBUG_INT_SIZE;k++){
+		_gpin_int[k] = 0;
+		_gpout_int[k] = 0;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -39,13 +47,15 @@ int microOSSlowLoop(void)
 			System.handleSystemRequest();
 			break;
 		default:
+#ifndef MICROOS_NOPRINT
 			System.write();
+#endif
 			break;
 	}
 
 	if(++slowhook_splitcounter > 10)
 		slowhook_splitcounter = 0;
-
+	
 	return 0;
 }
 
@@ -376,6 +386,7 @@ void MicroOS::setGPoutInt(uint8_t index, int32_t value)
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef MICROOS_NOPRINT
 void MicroOS::write()
 {
 	if(_print_buffer_tail!=0){
@@ -410,3 +421,27 @@ size_t MicroOS::write(const uint8_t *buffer, size_t size)
 
 	return size;
 }
+#else
+void MicroOS::println(const char *text)
+{
+	_communicator->sendPrint(text);
+}
+
+/*#ifndef PGM_P
+#define PGM_P const char *
+#endif*/
+
+void MicroOS::println(const __FlashStringHelper *text)
+{
+	PGM_P p = reinterpret_cast<PGM_P>(text);
+	size_t n = 0;
+	char buffer[MICROOS_PRINT_BUFFER_SIZE];
+	while(n < MICROOS_PRINT_BUFFER_SIZE){
+		buffer[n] = pgm_read_byte(p++);
+		if (buffer[n] == 0) break;
+		n++;
+	}
+	println(buffer);
+	//return n;
+}
+#endif
