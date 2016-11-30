@@ -28,8 +28,13 @@
 	
 #ifdef MICROOS_LIGHT
 	#define MICROOS_PRINT_BUFFER_SIZE			32
+	#define MICROOS_DEBUG_FLOAT_SIZE			4
+	#define MICROOS_DEBUG_INT_SIZE				2
 #else
 	#define MICROOS_PRINT_BUFFER_SIZE			128
+	#define MICROOS_DEBUG_FLOAT_SIZE			8
+	#define MICROOS_DEBUG_INT_SIZE				4
+#endif
 
 #define MICROOS_I2C_ENABLE		1
 #define MICROOS_SPI_ENABLE		1<<1
@@ -67,10 +72,10 @@ class MicroOS : public Print
 private:
 	system_info_t			_system_info;
 	uint8_t					_system_request;
-	float					_gpin_float[8];
-	int32_t					_gpin_int[4];
-	float					_gpout_float[8];
-	int32_t					_gpout_int[4];
+	float					_gpin_float[MICROOS_DEBUG_FLOAT_SIZE];
+	int32_t					_gpin_int[MICROOS_DEBUG_INT_SIZE];
+	float					_gpout_float[MICROOS_DEBUG_FLOAT_SIZE];
+	int32_t					_gpout_int[MICROOS_DEBUG_INT_SIZE];
 	char					_print_buffer[MICROOS_PRINT_BUFFER_SIZE];
 	uint8_t					_print_buffer_head;
 	uint8_t					_print_buffer_tail;

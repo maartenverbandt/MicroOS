@@ -298,7 +298,7 @@ int32_t* MicroOS::getGPinInt(void)
 
 float MicroOS::getGPinFloat(uint8_t index)
 {
-	if(index<8){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		return _gpin_float[index];
 	} else {
 		return 0.0f;
@@ -307,7 +307,7 @@ float MicroOS::getGPinFloat(uint8_t index)
 
 int32_t MicroOS::getGPinInt(uint8_t index)
 {
-	if(index<4){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		return _gpin_int[index];
 	} else {
 		return 0;
@@ -316,14 +316,14 @@ int32_t MicroOS::getGPinInt(uint8_t index)
 
 void MicroOS::setGPinFloat(uint8_t index, float value)
 {
-	if((index<8) && (_gpin_float[index]!=value)){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		_gpin_float[index] = value;
 	}
 }
 
 void MicroOS::setGPinInt(uint8_t index, int32_t value)
 {
-	if(index<4 && (_gpin_int[index]!=value)){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		_gpin_int[index] = value;
 	}
 }
@@ -340,7 +340,7 @@ int32_t* MicroOS::getGPoutInt(void)
 
 float MicroOS::getGPoutFloat(uint8_t index)
 {
-	if(index<8){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		return _gpout_float[index];
 	} else {
 		return 0.0f;
@@ -349,7 +349,7 @@ float MicroOS::getGPoutFloat(uint8_t index)
 
 int32_t MicroOS::getGPoutInt(uint8_t index)
 {
-	if(index<4){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		return _gpout_int[index];
 	} else {
 		return 0;
@@ -358,14 +358,14 @@ int32_t MicroOS::getGPoutInt(uint8_t index)
 
 void MicroOS::setGPoutFloat(uint8_t index, float value)
 {
-	if(index<8){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		_gpout_float[index] = value;
 	}
 }
 
 void MicroOS::setGPoutInt(uint8_t index, int32_t value)
 {
-	if(index<4){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		_gpout_int[index] = value;
 	}
 }

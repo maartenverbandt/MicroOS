@@ -58,7 +58,16 @@ void MavlinkCommunicator::sendThreadInfo(uint8_t ID, char* name, uint8_t priorit
 void MavlinkCommunicator::sendGPIO()
 {
 	mavlink_message_t msg;
-	mavlink_msg_gpio_pack(_id, 0, &msg,  millis(), System.getGPoutFloat(), System.getGPoutInt());
+	mavlink_gpio_t gpio;
+	
+	unsigned int k;
+	gpio.time = millis();
+	for(k=0;k<4;k++)
+		gpio.gpio_int[k] = System.getGPinInt(k);
+	for(k=0;k<8;k++)
+		gpio.gpio_float[k] = System.getGPinFloat(k);
+	
+	mavlink_msg_gpio_encode(_id, 0, &msg, &gpio);
 
 	sendMessage(msg);
 }
@@ -109,8 +118,13 @@ bool MavlinkCommunicator::handleMessage(mavlink_message_t &msg)
 			mavlink_gpio_t gpio;
 			mavlink_msg_gpio_decode(&msg,&gpio);
 
-			memcpy(System.getGPinInt(),gpio.gpio_int,16); //4*4bytes
-			memcpy(System.getGPinFloat(),gpio.gpio_float,32); //4*4bytes
+			unsigned int k;
+			for(k=0;k<4;k++)
+				System.setGPinInt(k,gpio.gpio_int[k]);
+			for(k=0;k<8;k++)
+				System.setGPinFloat(k,gpio.gpio_float[k]);
+			//memcpy(System.getGPinInt(),gpio.gpio_int,16); //4*4bytes
+			//memcpy(System.getGPinFloat(),gpio.gpio_float,32); //4*4bytes
 
 			//System.println("Received gpio message.");
 			break;}
