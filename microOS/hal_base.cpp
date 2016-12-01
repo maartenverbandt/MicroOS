@@ -1,7 +1,7 @@
 #include "hal_base.h"
 
 HALBase::HALBase(const uint8_t onboard_led_pin) :
-	_onboard_led_pin(onboard_led_pin), _onboard_led_state(false)
+	_onboard_led_pin(onboard_led_pin), _onboard_led_state(false), _primary_serial(&Serial), _secondary_serial(NULL)
 {
 	pinMode(_onboard_led_pin, OUTPUT);
 	digitalWrite(_onboard_led_pin, _onboard_led_state);
@@ -9,12 +9,8 @@ HALBase::HALBase(const uint8_t onboard_led_pin) :
 
 bool HALBase::init()
 {
-	// Set primary serial
+	// begin primary serial
 	Serial.begin(115200);
-	_primary_serial = &Serial;
-
-	//Set secondary serial to NULL
-	_secondary_serial = NULL;
 
 	// Toggle led
 	onboardLedToggle();
