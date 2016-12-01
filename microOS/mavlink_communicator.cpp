@@ -24,7 +24,6 @@ void MavlinkCommunicator::receive()
 {
 	for(uint8_t k=0;k<NUMBER_OF_CHANNELS;k++){
 		while(_channels[k].receive()){
-			//System.print("Port "); System.print(k); System.print(": ");
 			handleMessage(*reinterpret_cast<mavlink_message_t*>(_channels[k].getMessage()));
 		}
 	}
