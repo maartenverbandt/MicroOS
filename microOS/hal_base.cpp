@@ -1,6 +1,6 @@
 #include "hal_base.h"
 
-HALBase::HALBase(const uint8_t onboard_led_pin) :
+HALBase::HALBase(const uint8_t onboard_led_pin, const uint8_t version) :
 	_onboard_led_pin(onboard_led_pin), _onboard_led_state(false), _primary_serial(&Serial), _secondary_serial(NULL)
 {
 	pinMode(_onboard_led_pin, OUTPUT);

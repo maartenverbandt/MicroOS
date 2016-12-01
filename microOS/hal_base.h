@@ -19,7 +19,7 @@ private:
 	
 	
 public:	
-	HALBase(const uint8_t onboard_led_pin = 13);
+	HALBase(const uint8_t onboard_led_pin = 13, const uint8_t version = 0);
 	
 	virtual bool init();
 	
