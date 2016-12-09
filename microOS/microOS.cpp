@@ -3,22 +3,30 @@
 MicroOS System;
 
 MicroOS::MicroOS():
+#ifndef MICROOS_NOPRINT
 	Print(),
+#endif
 	_system_info(NOINFO),
 	_system_request(NOREQUEST),
-	_gpin_float({0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f}),
-	_gpin_int({0,0,0,0}),
-	_gpout_float({0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f}),
-	_gpout_int({0,0,0,0}),
+#ifndef MICROOS_NOPRINT
 	_print_buffer_head(0),
 	_print_buffer_tail(0),
+#endif
 	_thread_count(0),
 	_next_thread(0),
 	_scheduled_thread(0),
 	_config(0),
 	_slowhook_splitcounter(0)
 {
-	//do nothing
+	int k;
+	for(k=0;k<MICROOS_DEBUG_FLOAT_SIZE;k++){
+		_gpin_float[k] = 0.0f;
+		_gpout_float[k] = 0.0f;
+	}
+	for(k=0;k<MICROOS_DEBUG_INT_SIZE;k++){
+		_gpin_int[k] = 0;
+		_gpout_int[k] = 0;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -39,13 +47,15 @@ int microOSSlowLoop(void)
 			System.handleSystemRequest();
 			break;
 		default:
+#ifndef MICROOS_NOPRINT
 			System.write();
+#endif
 			break;
 	}
 
 	if(++slowhook_splitcounter > 10)
 		slowhook_splitcounter = 0;
-
+	
 	return 0;
 }
 
@@ -80,12 +90,6 @@ void MicroOS::configure(uint8_t config)
 
 void MicroOS::start(const start_t mode)
 {
-	//TODO: Test spi begin/enable
-	if((_config & MICROOS_I2C_ENABLE) != 0)
-		Wire.begin();
-	/*if((config & MICROOS_SPI_ENABLE) != 0)
-		SPI.begin();*/
-
 	// Fire up hal and communicator
 	if(_hal==NULL)
 		_hal = new HALBase();
@@ -304,7 +308,7 @@ int32_t* MicroOS::getGPinInt(void)
 
 float MicroOS::getGPinFloat(uint8_t index)
 {
-	if(index<8){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		return _gpin_float[index];
 	} else {
 		return 0.0f;
@@ -313,7 +317,7 @@ float MicroOS::getGPinFloat(uint8_t index)
 
 int32_t MicroOS::getGPinInt(uint8_t index)
 {
-	if(index<4){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		return _gpin_int[index];
 	} else {
 		return 0;
@@ -322,14 +326,14 @@ int32_t MicroOS::getGPinInt(uint8_t index)
 
 void MicroOS::setGPinFloat(uint8_t index, float value)
 {
-	if((index<8) && (_gpin_float[index]!=value)){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		_gpin_float[index] = value;
 	}
 }
 
 void MicroOS::setGPinInt(uint8_t index, int32_t value)
 {
-	if(index<4 && (_gpin_int[index]!=value)){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		_gpin_int[index] = value;
 	}
 }
@@ -346,7 +350,7 @@ int32_t* MicroOS::getGPoutInt(void)
 
 float MicroOS::getGPoutFloat(uint8_t index)
 {
-	if(index<8){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		return _gpout_float[index];
 	} else {
 		return 0.0f;
@@ -355,7 +359,7 @@ float MicroOS::getGPoutFloat(uint8_t index)
 
 int32_t MicroOS::getGPoutInt(uint8_t index)
 {
-	if(index<4){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		return _gpout_int[index];
 	} else {
 		return 0;
@@ -364,14 +368,14 @@ int32_t MicroOS::getGPoutInt(uint8_t index)
 
 void MicroOS::setGPoutFloat(uint8_t index, float value)
 {
-	if(index<8){
+	if(index<MICROOS_DEBUG_FLOAT_SIZE){
 		_gpout_float[index] = value;
 	}
 }
 
 void MicroOS::setGPoutInt(uint8_t index, int32_t value)
 {
-	if(index<4){
+	if(index<MICROOS_DEBUG_INT_SIZE){
 		_gpout_int[index] = value;
 	}
 }
@@ -382,6 +386,7 @@ void MicroOS::setGPoutInt(uint8_t index, int32_t value)
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef MICROOS_NOPRINT
 void MicroOS::write()
 {
 	if(_print_buffer_tail!=0){
@@ -416,3 +421,27 @@ size_t MicroOS::write(const uint8_t *buffer, size_t size)
 
 	return size;
 }
+#else
+void MicroOS::println(const char *text)
+{
+	_communicator->sendPrint(text);
+}
+
+/*#ifndef PGM_P
+#define PGM_P const char *
+#endif*/
+
+void MicroOS::println(const __FlashStringHelper *text)
+{
+	PGM_P p = reinterpret_cast<PGM_P>(text);
+	size_t n = 0;
+	char buffer[MICROOS_PRINT_BUFFER_SIZE];
+	while(n < MICROOS_PRINT_BUFFER_SIZE){
+		buffer[n] = pgm_read_byte(p++);
+		if (buffer[n] == 0) break;
+		n++;
+	}
+	println(buffer);
+	//return n;
+}
+#endif

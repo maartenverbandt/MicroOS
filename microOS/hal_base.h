@@ -7,35 +7,30 @@
 #include "WProgram.h"
 #endif
 
+
 class HALBase
 {
 private:
-	const uint8_t 	_version;	
+	Stream*	_primary_serial;
+	Stream*	_secondary_serial;
+
 	const uint8_t 	_onboard_led_pin;
 	bool 			_onboard_led_state;
 	
-	HardwareSerial*	_primary_serial;
-	HardwareSerial*	_secondary_serial;
-	uint32_t		_primary_baud;
-	uint32_t		_secondary_baud;
 	
 public:	
 	HALBase(const uint8_t onboard_led_pin = 13, const uint8_t version = 0);
 	
 	virtual bool init();
 	
-	const uint8_t version();
 	const uint8_t onboardLedPin();
 	void onboardLedToggle();
 	
-	HardwareSerial* getSerial();
-	HardwareSerial* getPrimarySerial();
-	HardwareSerial* getSecondarySerial();
-	void setPrimarySerial(HardwareSerial *serial);
-	void setSecondarySerial(HardwareSerial *serial);
-	void setBaud(uint32_t baud);
-	void setPrimaryBaud(uint32_t baud);
-	void setSecondaryBaud(uint32_t baud);
+	Stream* getSerial(int index = 0);
+	Stream* getPrimarySerial();
+	Stream* getSecondarySerial();
+	void setPrimarySerial(Stream *serial);
+	void setSecondarySerial(Stream *serial);
 	
 	uint8_t setAnalogReadResolution(const uint8_t resolution);
 };

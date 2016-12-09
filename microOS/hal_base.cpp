@@ -1,7 +1,7 @@
 #include "hal_base.h"
 
 HALBase::HALBase(const uint8_t onboard_led_pin, const uint8_t version) :
-	_version(version), _onboard_led_pin(onboard_led_pin), _onboard_led_state(false), _primary_serial(&Serial), _secondary_serial(NULL), _primary_baud(115200), _secondary_baud(115200)
+	_onboard_led_pin(onboard_led_pin), _onboard_led_state(false), _primary_serial(&Serial), _secondary_serial(NULL)
 {
 	pinMode(_onboard_led_pin, OUTPUT);
 	digitalWrite(_onboard_led_pin, _onboard_led_state);
@@ -9,20 +9,13 @@ HALBase::HALBase(const uint8_t onboard_led_pin, const uint8_t version) :
 
 bool HALBase::init()
 {
+	// begin primary serial
+	Serial.begin(115200);
+
+	// Toggle led
 	onboardLedToggle();
 	
-	if(getPrimarySerial()!=NULL){
-		getPrimarySerial()->begin(_primary_baud);
-	}
-	if(getSecondarySerial()!=NULL){
-		getSecondarySerial()->begin(_secondary_baud);
-	}
 	return true;
-}
-
-const uint8_t HALBase::version()
-{
-	return _version;
 }
 
 const uint8_t HALBase::onboardLedPin()
@@ -36,45 +29,35 @@ void HALBase::onboardLedToggle()
 	digitalWrite(_onboard_led_pin, _onboard_led_state);
 }	
 
-HardwareSerial* HALBase::getSerial()
+Stream* HALBase::getSerial(int index)
 {
-	return getPrimarySerial();
+	switch(index){
+	case 0:
+		return _primary_serial;
+	case 1:
+		return _secondary_serial;
+	}
+	return NULL;
 }
 
-HardwareSerial* HALBase::getPrimarySerial()
+Stream* HALBase::getPrimarySerial()
 {
 	return _primary_serial;
 }
 
-HardwareSerial* HALBase::getSecondarySerial()
+Stream* HALBase::getSecondarySerial()
 {
 	return _secondary_serial;
 }
 
-void HALBase::setPrimarySerial(HardwareSerial *serial)
+void HALBase::setPrimarySerial(Stream *serial)
 {
 	_primary_serial = serial;
 }
 
-void HALBase::setSecondarySerial(HardwareSerial *serial)
+void HALBase::setSecondarySerial(Stream *serial)
 {
 	_secondary_serial = serial;
-}
-
-void HALBase::setBaud(uint32_t baud)
-{
-	setPrimaryBaud(baud);
-	setSecondaryBaud(baud);
-}
-
-void HALBase::setPrimaryBaud(uint32_t baud)
-{
-	_primary_baud = baud;
-}
-
-void HALBase::setSecondaryBaud(uint32_t baud)
-{
-	_secondary_baud = baud;
 }
 
 uint8_t HALBase::setAnalogReadResolution(const uint8_t resolution)
