@@ -46,6 +46,9 @@ int microOSSlowLoop(void)
 		case 1:
 			System.handleSystemRequest();
 			break;
+        case 2:
+            System.sendNextThreadInfo();
+            break;
 		default:
 #ifndef MICROOS_NOPRINT
 			System.write();
@@ -274,19 +277,10 @@ void MicroOS::handleSystemRequest()
 	switch(_system_request){
 		case NOREQUEST: break;
 		case THREADINFO:{
-			for(uint8_t k=0;k<_thread_count;k++){
-				_communicator->sendThreadInfo(_threads[k]->getID(), _threads[k]->getName(), _threads[k]->getPriority(),
-										   _threads[k]->getDuration(), _threads[k]->getLatency(),
-										   _threads[k]->getTotalDuration(), _threads[k]->getTotalLatency(), _threads[k]->getNumberOfExecutions());
-			}
-
+            sendAllThreadInfo();
 			break;}
 		case NEXTTHREADINFO:{
-			_communicator->sendThreadInfo(_threads[_next_thread]->getID(), _threads[_next_thread]->getName(), _threads[_next_thread]->getPriority(),
-										  _threads[_next_thread]->getDuration(), _threads[_next_thread]->getLatency(),
-										  _threads[_next_thread]->getTotalDuration(), _threads[_next_thread]->getTotalLatency(), _threads[_next_thread]->getNumberOfExecutions());
-			if(++_next_thread >= _thread_count)
-				_next_thread = 0;
+            sendNextThreadInfo();
 			break;}
 		case HWINFO:{
 			//do nothing for now
@@ -294,6 +288,19 @@ void MicroOS::handleSystemRequest()
 	}
 
 	_system_request = NOREQUEST;
+}
+
+void MicroOS::sendNextThreadInfo(void)
+{
+    _communicator->sendThreadInfo(_threads[_next_thread]->getID(), _threads[_next_thread]->getName(), _threads[_next_thread]->getPriority(), _threads[_next_thread]->getDuration(), _threads[_next_thread]->getLatency(), _threads[_next_thread]->getTotalDuration(), _threads[_next_thread]->getTotalLatency(), _threads[_next_thread]->getNumberOfExecutions());
+	if(++_next_thread >= _thread_count)
+				_next_thread = 0;
+}
+
+void MicroOS::sendAllThreadInfo(void)
+{
+	for(uint8_t k=0;k<_thread_count;k++)
+		_communicator->sendThreadInfo(_threads[k]->getID(), _threads[k]->getName(), _threads[k]->getPriority(), _threads[k]->getDuration(), _threads[k]->getLatency(), _threads[k]->getTotalDuration(), _threads[k]->getTotalLatency(), _threads[k]->getNumberOfExecutions());
 }
 
 float* MicroOS::getGPinFloat(void)

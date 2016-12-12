@@ -121,6 +121,8 @@ public:
 
 	void sendSystemRequest(uint8_t system_request);
 	void handleSystemRequest(void);
+    void sendNextThreadInfo(void);
+    void sendAllThreadInfo(void);
 
 #ifndef MICROOS_NOPRINT
 	void write();
