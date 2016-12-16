@@ -1,6 +1,7 @@
 #include "mavlink_communicator.h"
 
-MavlinkCommunicator::MavlinkCommunicator(const uint8_t id, HALBase *hal, const uint8_t type) :
+MavlinkCommunicator::MavlinkCommunicator(const uint8_t id, const uint8_t type, HALBase *hal) :
+	_hal(hal),
 	_id(id),
 	_type(type),
 #ifdef SINGLE_CHANNEL

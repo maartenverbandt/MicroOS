@@ -25,7 +25,7 @@ protected:
 	virtual bool handleMessage(mavlink_message_t &msg);
 
 public:
-	MavlinkCommunicator(const uint8_t id, HALBase *hal, const uint8_t type = 20);
+	MavlinkCommunicator(const uint8_t id, const uint8_t type, HALBase *hal);
 
 	virtual void init();
 	virtual void receive();

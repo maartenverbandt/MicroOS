@@ -99,7 +99,7 @@ void MicroOS::start(const start_t mode)
 	_hal->init();
 
 	if(_communicator==NULL)
-		_communicator = new MavlinkCommunicator(45,_hal);
+		_communicator = new MavlinkCommunicator(45,0,_hal);
 	_communicator->init();
 
 	// Add the different standard threads
