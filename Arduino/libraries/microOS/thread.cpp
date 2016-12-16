@@ -5,7 +5,7 @@ Thread::Thread()
 	//do nothing
 }
 
-Thread::Thread(priority_t priority, uint32_t period, int (*Fcn)(), char* name):
+Thread::Thread(priority_t priority, uint32_t period, int (*Fcn)()):
 	_active(false),
 	_ID(0),
 	_priority(priority),
@@ -18,7 +18,7 @@ Thread::Thread(priority_t priority, uint32_t period, int (*Fcn)(), char* name):
 	_number_of_executions(0),
 	_pFcn(Fcn)
 {
-	memcpy(_name, name, THREAD_NAME_SIZE);
+	//do nothing
 }
 
 /*void Thread::operator=(const Thread t)
@@ -109,11 +109,6 @@ void Thread::setID(uint8_t ID)
 uint8_t Thread::getID()
 {
 	return _ID;
-}
-
-char* Thread::getName()
-{
-	return _name;
 }
 
 uint32_t Thread::getPeriod()

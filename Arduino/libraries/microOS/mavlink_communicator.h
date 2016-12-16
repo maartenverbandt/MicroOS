@@ -32,8 +32,8 @@ public:
 	virtual void transmit();
 
 	void sendHeartbeat();
-	void sendThreadInfo(uint8_t ID, char* name, uint8_t priority,
-						uint32_t duration, uint32_t latency,
+	void sendThreadInfo(uint8_t ID, uint8_t priority,
+						uint32_t duration, uint32_t latency, 
 						uint32_t total_duration, uint32_t total_latency, uint32_t number_of_executions);
 	void sendGPIO();
 	void sendEvent(uint16_t event);

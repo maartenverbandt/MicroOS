@@ -50,7 +50,7 @@ void MavlinkCommunicator::sendHeartbeat()
 	sendMessage(msg);
 }
 
-void MavlinkCommunicator::sendThreadInfo(uint8_t ID, char* name, uint8_t priority, uint32_t duration, uint32_t latency, uint32_t total_duration, uint32_t total_latency, uint32_t number_of_executions)
+void MavlinkCommunicator::sendThreadInfo(uint8_t ID, uint8_t priority, uint32_t duration, uint32_t latency, uint32_t total_duration, uint32_t total_latency, uint32_t number_of_executions)
 {
 	mavlink_message_t msg;
 	mavlink_msg_thread_info_pack(_id, 0, &msg, millis(), ID, priority, duration, latency, total_duration, total_latency, number_of_executions);
