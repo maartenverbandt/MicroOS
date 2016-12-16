@@ -24,6 +24,7 @@ protected:
 	virtual void sendMessage(mavlink_message_t &msg);
 	virtual bool handleMessage(mavlink_message_t &msg);
 
+	virtual void handleEvent(uint16_t event);
 public:
 	MavlinkCommunicator(const uint8_t id, const uint8_t type, HALBase *hal);
 
@@ -37,7 +38,6 @@ public:
 						uint32_t total_duration, uint32_t total_latency, uint32_t number_of_executions);
 	void sendGPIO();
 	void sendEvent(uint16_t event);
-	virtual void handleEvent(uint16_t event);
 	void sendPrint(const char *text);
 };
 
