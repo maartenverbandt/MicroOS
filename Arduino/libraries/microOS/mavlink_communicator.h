@@ -17,6 +17,7 @@
 class MavlinkCommunicator : public CommunicatorInterface
 {
 protected:
+	HALBase *_hal;
 	const uint8_t _id;
 	const uint8_t _type;
 	Channel _channels[NUMBER_OF_CHANNELS];
