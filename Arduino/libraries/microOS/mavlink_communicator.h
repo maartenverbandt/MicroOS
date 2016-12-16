@@ -26,6 +26,8 @@ protected:
 	virtual bool handleMessage(mavlink_message_t &msg);
 
 	virtual void handleEvent(uint16_t event);
+	virtual void handlePartition(const mavlink_partition_t &partition);
+	
 public:
 	MavlinkCommunicator(const uint8_t id, const uint8_t type, HALBase *hal);
 

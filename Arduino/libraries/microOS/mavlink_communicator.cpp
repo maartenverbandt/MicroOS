@@ -106,6 +106,11 @@ void MavlinkCommunicator::handleEvent(uint16_t event)
 	}*/
 }
 
+void MavlinkCommunicator::handlePartition(const mavlink_partition_t &partition)
+{
+	//System.println("Partition message decoded.");
+}
+
 void MavlinkCommunicator::sendPrint(const char *text)
 {
 	mavlink_message_t msg;
@@ -139,6 +144,13 @@ bool MavlinkCommunicator::handleMessage(mavlink_message_t &msg)
 
 			handleEvent(event.type);
 			//System.println("Received event message.");
+			break;}
+			
+		case MAVLINK_MSG_ID_PARTITION:{
+			mavlink_partition_t partition;
+			mavlink_msg_partition_decode(&msg,&partition);
+
+			handlePartition(partition);
 			break;}
 
 		/*case INTERESTING_MSG_ID:{
