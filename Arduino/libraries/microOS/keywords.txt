@@ -1,0 +1,11 @@
+System	KEYWORD1
+Thread	KEYWORD1
+HALBase	KEYWORD1
+MavlinkCommunicator KEYWORD1
+setGPoutInt	KEYWORD2
+setGPoutFloat	KEYWORD2
+getGPinInt	KEYWORD2
+getGPinFloat	KEYWORD2
+start	KEYWORD2
+run	KEYWORD2
+addThread	KEYWORD2

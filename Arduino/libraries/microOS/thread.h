@@ -7,7 +7,6 @@
 #include "WProgram.h"
 #endif
 
-#define THREAD_NAME_SIZE				10
 //#define AUTO_SCHEDULE_THREADING //do this only if you have a good reason, because thread update frequencies will be off
 
 typedef enum priority_t{	
@@ -28,7 +27,6 @@ class Thread
 private:
 	bool 			_active;
 	uint8_t 		_ID;
-	char 			_name[THREAD_NAME_SIZE];
 	
 	priority_t 		_priority;
 	uint32_t 		_period;
@@ -44,7 +42,7 @@ private:
 	
 public:
 	Thread();
-	Thread(priority_t priority, uint32_t period, int (*Fcn)(), char* name = "");
+	Thread(priority_t priority, uint32_t period, int (*Fcn)());
 
 	//void operator=(const Thread t);
 
@@ -58,7 +56,6 @@ public:
 	void setID(uint8_t ID);
 	
 	uint8_t getID();
-	char* getName();
 	priority_t getPriority();
 	uint32_t getPeriod();
 	uint32_t getWakeupTime();
