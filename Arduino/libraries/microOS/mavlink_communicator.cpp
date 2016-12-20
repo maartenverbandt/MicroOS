@@ -67,9 +67,9 @@ void MavlinkCommunicator::sendGPIO()
 	unsigned int k;
 	gpio.time = millis();
 	for(k=0;k<4;k++)
-		gpio.gpio_int[k] = System.getGPinInt(k);
+		gpio.gpio_int[k] = System.getGPoutInt(k);
 	for(k=0;k<8;k++)
-		gpio.gpio_float[k] = System.getGPinFloat(k);
+		gpio.gpio_float[k] = System.getGPoutFloat(k);
 	
 	mavlink_msg_gpio_encode(_id, 0, &msg, &gpio);
 
