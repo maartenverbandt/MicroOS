@@ -108,8 +108,8 @@ public:
 	void setHAL(HALBase* hal);
 	void setCommunicator(CommunicatorInterface* communicator);
 	void configure(uint8_t config);
-	void start(system_start_t mode = SEQUENTIAL);
-	void run(system_run_t mode = PRIORITIZED);
+	void start(system_start_t mode = REGULAR);
+	void run(system_run_t mode = RESCHEDULED);
 	
 	HALBase*				hal();
 	CommunicatorInterface*	communicator();
