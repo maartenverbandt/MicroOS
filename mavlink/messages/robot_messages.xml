@@ -23,6 +23,9 @@
 			<field type="int16_t" name="roll_act">roll actuator [mV].</field>
 			<field type="int16_t" name="pitch_act">pitch actuator [mV]</field>
 			<field type="int16_t" name="yaw_act">yaw actuator [mV]</field>
+			<field type="int16_t" name="roll_cont">roll controller output [mV].</field>
+			<field type="int16_t" name="pitch_cont">pitch controller output [mV]</field>
+			<field type="int16_t" name="yaw_cont">yaw controller output [mV]</field>
 		</message>
 		<message id="52" name="VELOCITY">
 			<description>Robot velocity information.</description>
@@ -36,6 +39,9 @@
 			<field type="int16_t" name="vx_act">x velocity actuator [mrad-sugg.].</field>
 			<field type="int16_t" name="vy_act">y velocity actuator [mrad-sugg.].</field>
 			<field type="int16_t" name="vz_act">z velocity actuator [mrad-sugg.].</field>
+			<field type="int16_t" name="vx_cont">x velocity controller output [mrad-sugg.].</field>
+			<field type="int16_t" name="vy_cont">y velocity controller output [mrad-sugg.].</field>
+			<field type="int16_t" name="vz_cont">z velocity controller output [mrad-sugg.].</field>
 		</message>
 		<message id="53" name="POSITION">
 			<description>Robot position information.</description>
@@ -49,6 +55,9 @@
 			<field type="int16_t" name="x_act">x actuator [mrad].</field>
 			<field type="int16_t" name="y_act">y actuator [mrad]</field>
 			<field type="int16_t" name="z_act">z actuator [mrad]</field>
+			<field type="int16_t" name="x_cont">x controller output [mrad].</field>
+			<field type="int16_t" name="y_cont">y controller output [mrad]</field>
+			<field type="int16_t" name="z_cont">z controller output [mrad]</field>
 		</message>
 		<message id="54" name="ATTITUDE_CMD">
 			<description>Robot attitude command/reference.</description>
@@ -78,7 +87,7 @@
 			<field type="int16_t" name="zFF">z feedforward</field>
 		</message>
 		
-        <message id="70" name="RADAR_CLOUD">
+    <message id="70" name="RADAR_CLOUD">
 			<description>Point cloud information.</description>
 			<field type="int32_t[6]" name="x">x [mm-sugg.].</field>
 			<field type="int32_t[6]" name="y">y [mm-sugg.].</field>

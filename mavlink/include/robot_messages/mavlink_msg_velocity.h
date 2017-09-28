@@ -14,19 +14,22 @@ typedef struct __mavlink_velocity_t
  int16_t vx_act; ///< x velocity actuator [mrad-sugg.].
  int16_t vy_act; ///< y velocity actuator [mrad-sugg.].
  int16_t vz_act; ///< z velocity actuator [mrad-sugg.].
+ int16_t vx_cont; ///< x velocity controller output [mrad-sugg.].
+ int16_t vy_cont; ///< y velocity controller output [mrad-sugg.].
+ int16_t vz_cont; ///< z velocity controller output [mrad-sugg.].
 } mavlink_velocity_t;
 
-#define MAVLINK_MSG_ID_VELOCITY_LEN 22
-#define MAVLINK_MSG_ID_52_LEN 22
+#define MAVLINK_MSG_ID_VELOCITY_LEN 28
+#define MAVLINK_MSG_ID_52_LEN 28
 
-#define MAVLINK_MSG_ID_VELOCITY_CRC 13
-#define MAVLINK_MSG_ID_52_CRC 13
+#define MAVLINK_MSG_ID_VELOCITY_CRC 97
+#define MAVLINK_MSG_ID_52_CRC 97
 
 
 
 #define MAVLINK_MESSAGE_INFO_VELOCITY { \
 	"VELOCITY", \
-	10, \
+	13, \
 	{  { "time", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_velocity_t, time) }, \
          { "vx", NULL, MAVLINK_TYPE_INT16_T, 0, 4, offsetof(mavlink_velocity_t, vx) }, \
          { "vy", NULL, MAVLINK_TYPE_INT16_T, 0, 6, offsetof(mavlink_velocity_t, vy) }, \
@@ -37,6 +40,9 @@ typedef struct __mavlink_velocity_t
          { "vx_act", NULL, MAVLINK_TYPE_INT16_T, 0, 16, offsetof(mavlink_velocity_t, vx_act) }, \
          { "vy_act", NULL, MAVLINK_TYPE_INT16_T, 0, 18, offsetof(mavlink_velocity_t, vy_act) }, \
          { "vz_act", NULL, MAVLINK_TYPE_INT16_T, 0, 20, offsetof(mavlink_velocity_t, vz_act) }, \
+         { "vx_cont", NULL, MAVLINK_TYPE_INT16_T, 0, 22, offsetof(mavlink_velocity_t, vx_cont) }, \
+         { "vy_cont", NULL, MAVLINK_TYPE_INT16_T, 0, 24, offsetof(mavlink_velocity_t, vy_cont) }, \
+         { "vz_cont", NULL, MAVLINK_TYPE_INT16_T, 0, 26, offsetof(mavlink_velocity_t, vz_cont) }, \
          } \
 }
 
@@ -57,10 +63,13 @@ typedef struct __mavlink_velocity_t
  * @param vx_act x velocity actuator [mrad-sugg.].
  * @param vy_act y velocity actuator [mrad-sugg.].
  * @param vz_act z velocity actuator [mrad-sugg.].
+ * @param vx_cont x velocity controller output [mrad-sugg.].
+ * @param vy_cont y velocity controller output [mrad-sugg.].
+ * @param vz_cont z velocity controller output [mrad-sugg.].
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_velocity_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint32_t time, int16_t vx, int16_t vy, int16_t vz, int16_t vx_cmd, int16_t vy_cmd, int16_t vz_cmd, int16_t vx_act, int16_t vy_act, int16_t vz_act)
+						       uint32_t time, int16_t vx, int16_t vy, int16_t vz, int16_t vx_cmd, int16_t vy_cmd, int16_t vz_cmd, int16_t vx_act, int16_t vy_act, int16_t vz_act, int16_t vx_cont, int16_t vy_cont, int16_t vz_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_VELOCITY_LEN];
@@ -74,6 +83,9 @@ static inline uint16_t mavlink_msg_velocity_pack(uint8_t system_id, uint8_t comp
 	_mav_put_int16_t(buf, 16, vx_act);
 	_mav_put_int16_t(buf, 18, vy_act);
 	_mav_put_int16_t(buf, 20, vz_act);
+	_mav_put_int16_t(buf, 22, vx_cont);
+	_mav_put_int16_t(buf, 24, vy_cont);
+	_mav_put_int16_t(buf, 26, vz_cont);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_VELOCITY_LEN);
 #else
@@ -88,6 +100,9 @@ static inline uint16_t mavlink_msg_velocity_pack(uint8_t system_id, uint8_t comp
 	packet.vx_act = vx_act;
 	packet.vy_act = vy_act;
 	packet.vz_act = vz_act;
+	packet.vx_cont = vx_cont;
+	packet.vy_cont = vy_cont;
+	packet.vz_cont = vz_cont;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_VELOCITY_LEN);
 #endif
@@ -116,11 +131,14 @@ static inline uint16_t mavlink_msg_velocity_pack(uint8_t system_id, uint8_t comp
  * @param vx_act x velocity actuator [mrad-sugg.].
  * @param vy_act y velocity actuator [mrad-sugg.].
  * @param vz_act z velocity actuator [mrad-sugg.].
+ * @param vx_cont x velocity controller output [mrad-sugg.].
+ * @param vy_cont y velocity controller output [mrad-sugg.].
+ * @param vz_cont z velocity controller output [mrad-sugg.].
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_velocity_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint32_t time,int16_t vx,int16_t vy,int16_t vz,int16_t vx_cmd,int16_t vy_cmd,int16_t vz_cmd,int16_t vx_act,int16_t vy_act,int16_t vz_act)
+						           uint32_t time,int16_t vx,int16_t vy,int16_t vz,int16_t vx_cmd,int16_t vy_cmd,int16_t vz_cmd,int16_t vx_act,int16_t vy_act,int16_t vz_act,int16_t vx_cont,int16_t vy_cont,int16_t vz_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_VELOCITY_LEN];
@@ -134,6 +152,9 @@ static inline uint16_t mavlink_msg_velocity_pack_chan(uint8_t system_id, uint8_t
 	_mav_put_int16_t(buf, 16, vx_act);
 	_mav_put_int16_t(buf, 18, vy_act);
 	_mav_put_int16_t(buf, 20, vz_act);
+	_mav_put_int16_t(buf, 22, vx_cont);
+	_mav_put_int16_t(buf, 24, vy_cont);
+	_mav_put_int16_t(buf, 26, vz_cont);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_VELOCITY_LEN);
 #else
@@ -148,6 +169,9 @@ static inline uint16_t mavlink_msg_velocity_pack_chan(uint8_t system_id, uint8_t
 	packet.vx_act = vx_act;
 	packet.vy_act = vy_act;
 	packet.vz_act = vz_act;
+	packet.vx_cont = vx_cont;
+	packet.vy_cont = vy_cont;
+	packet.vz_cont = vz_cont;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_VELOCITY_LEN);
 #endif
@@ -170,7 +194,7 @@ static inline uint16_t mavlink_msg_velocity_pack_chan(uint8_t system_id, uint8_t
  */
 static inline uint16_t mavlink_msg_velocity_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_velocity_t* velocity)
 {
-	return mavlink_msg_velocity_pack(system_id, component_id, msg, velocity->time, velocity->vx, velocity->vy, velocity->vz, velocity->vx_cmd, velocity->vy_cmd, velocity->vz_cmd, velocity->vx_act, velocity->vy_act, velocity->vz_act);
+	return mavlink_msg_velocity_pack(system_id, component_id, msg, velocity->time, velocity->vx, velocity->vy, velocity->vz, velocity->vx_cmd, velocity->vy_cmd, velocity->vz_cmd, velocity->vx_act, velocity->vy_act, velocity->vz_act, velocity->vx_cont, velocity->vy_cont, velocity->vz_cont);
 }
 
 /**
@@ -184,7 +208,7 @@ static inline uint16_t mavlink_msg_velocity_encode(uint8_t system_id, uint8_t co
  */
 static inline uint16_t mavlink_msg_velocity_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_velocity_t* velocity)
 {
-	return mavlink_msg_velocity_pack_chan(system_id, component_id, chan, msg, velocity->time, velocity->vx, velocity->vy, velocity->vz, velocity->vx_cmd, velocity->vy_cmd, velocity->vz_cmd, velocity->vx_act, velocity->vy_act, velocity->vz_act);
+	return mavlink_msg_velocity_pack_chan(system_id, component_id, chan, msg, velocity->time, velocity->vx, velocity->vy, velocity->vz, velocity->vx_cmd, velocity->vy_cmd, velocity->vz_cmd, velocity->vx_act, velocity->vy_act, velocity->vz_act, velocity->vx_cont, velocity->vy_cont, velocity->vz_cont);
 }
 
 /**
@@ -201,10 +225,13 @@ static inline uint16_t mavlink_msg_velocity_encode_chan(uint8_t system_id, uint8
  * @param vx_act x velocity actuator [mrad-sugg.].
  * @param vy_act y velocity actuator [mrad-sugg.].
  * @param vz_act z velocity actuator [mrad-sugg.].
+ * @param vx_cont x velocity controller output [mrad-sugg.].
+ * @param vy_cont y velocity controller output [mrad-sugg.].
+ * @param vz_cont z velocity controller output [mrad-sugg.].
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_velocity_send(mavlink_channel_t chan, uint32_t time, int16_t vx, int16_t vy, int16_t vz, int16_t vx_cmd, int16_t vy_cmd, int16_t vz_cmd, int16_t vx_act, int16_t vy_act, int16_t vz_act)
+static inline void mavlink_msg_velocity_send(mavlink_channel_t chan, uint32_t time, int16_t vx, int16_t vy, int16_t vz, int16_t vx_cmd, int16_t vy_cmd, int16_t vz_cmd, int16_t vx_act, int16_t vy_act, int16_t vz_act, int16_t vx_cont, int16_t vy_cont, int16_t vz_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_VELOCITY_LEN];
@@ -218,6 +245,9 @@ static inline void mavlink_msg_velocity_send(mavlink_channel_t chan, uint32_t ti
 	_mav_put_int16_t(buf, 16, vx_act);
 	_mav_put_int16_t(buf, 18, vy_act);
 	_mav_put_int16_t(buf, 20, vz_act);
+	_mav_put_int16_t(buf, 22, vx_cont);
+	_mav_put_int16_t(buf, 24, vy_cont);
+	_mav_put_int16_t(buf, 26, vz_cont);
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VELOCITY, buf, MAVLINK_MSG_ID_VELOCITY_LEN, MAVLINK_MSG_ID_VELOCITY_CRC);
@@ -236,6 +266,9 @@ static inline void mavlink_msg_velocity_send(mavlink_channel_t chan, uint32_t ti
 	packet.vx_act = vx_act;
 	packet.vy_act = vy_act;
 	packet.vz_act = vz_act;
+	packet.vx_cont = vx_cont;
+	packet.vy_cont = vy_cont;
+	packet.vz_cont = vz_cont;
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VELOCITY, (const char *)&packet, MAVLINK_MSG_ID_VELOCITY_LEN, MAVLINK_MSG_ID_VELOCITY_CRC);
@@ -253,7 +286,7 @@ static inline void mavlink_msg_velocity_send(mavlink_channel_t chan, uint32_t ti
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_velocity_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint32_t time, int16_t vx, int16_t vy, int16_t vz, int16_t vx_cmd, int16_t vy_cmd, int16_t vz_cmd, int16_t vx_act, int16_t vy_act, int16_t vz_act)
+static inline void mavlink_msg_velocity_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint32_t time, int16_t vx, int16_t vy, int16_t vz, int16_t vx_cmd, int16_t vy_cmd, int16_t vz_cmd, int16_t vx_act, int16_t vy_act, int16_t vz_act, int16_t vx_cont, int16_t vy_cont, int16_t vz_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char *buf = (char *)msgbuf;
@@ -267,6 +300,9 @@ static inline void mavlink_msg_velocity_send_buf(mavlink_message_t *msgbuf, mavl
 	_mav_put_int16_t(buf, 16, vx_act);
 	_mav_put_int16_t(buf, 18, vy_act);
 	_mav_put_int16_t(buf, 20, vz_act);
+	_mav_put_int16_t(buf, 22, vx_cont);
+	_mav_put_int16_t(buf, 24, vy_cont);
+	_mav_put_int16_t(buf, 26, vz_cont);
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VELOCITY, buf, MAVLINK_MSG_ID_VELOCITY_LEN, MAVLINK_MSG_ID_VELOCITY_CRC);
@@ -285,6 +321,9 @@ static inline void mavlink_msg_velocity_send_buf(mavlink_message_t *msgbuf, mavl
 	packet->vx_act = vx_act;
 	packet->vy_act = vy_act;
 	packet->vz_act = vz_act;
+	packet->vx_cont = vx_cont;
+	packet->vy_cont = vy_cont;
+	packet->vz_cont = vz_cont;
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_VELOCITY, (const char *)packet, MAVLINK_MSG_ID_VELOCITY_LEN, MAVLINK_MSG_ID_VELOCITY_CRC);
@@ -401,6 +440,36 @@ static inline int16_t mavlink_msg_velocity_get_vz_act(const mavlink_message_t* m
 }
 
 /**
+ * @brief Get field vx_cont from velocity message
+ *
+ * @return x velocity controller output [mrad-sugg.].
+ */
+static inline int16_t mavlink_msg_velocity_get_vx_cont(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_int16_t(msg,  22);
+}
+
+/**
+ * @brief Get field vy_cont from velocity message
+ *
+ * @return y velocity controller output [mrad-sugg.].
+ */
+static inline int16_t mavlink_msg_velocity_get_vy_cont(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_int16_t(msg,  24);
+}
+
+/**
+ * @brief Get field vz_cont from velocity message
+ *
+ * @return z velocity controller output [mrad-sugg.].
+ */
+static inline int16_t mavlink_msg_velocity_get_vz_cont(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_int16_t(msg,  26);
+}
+
+/**
  * @brief Decode a velocity message into a struct
  *
  * @param msg The message to decode
@@ -419,6 +488,9 @@ static inline void mavlink_msg_velocity_decode(const mavlink_message_t* msg, mav
 	velocity->vx_act = mavlink_msg_velocity_get_vx_act(msg);
 	velocity->vy_act = mavlink_msg_velocity_get_vy_act(msg);
 	velocity->vz_act = mavlink_msg_velocity_get_vz_act(msg);
+	velocity->vx_cont = mavlink_msg_velocity_get_vx_cont(msg);
+	velocity->vy_cont = mavlink_msg_velocity_get_vy_cont(msg);
+	velocity->vz_cont = mavlink_msg_velocity_get_vz_cont(msg);
 #else
 	memcpy(velocity, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_VELOCITY_LEN);
 #endif
