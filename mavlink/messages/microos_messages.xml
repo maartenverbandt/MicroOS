@@ -41,5 +41,34 @@
 			<description>Message allowing short strings to be passed on.</description>
 			<field type="char[32]" name="text">Text to be sent. We suggest termination with '\0'.</field>
 		</message>
+		
+		<message id="10" name="PARAM_INT">
+			<description>Message to read/write parameters to microOS.</description>
+			<field type="char" name="ID">Partition ID - make this a general purpose message</field>
+			<field type="uint16_t" name="pointer">First register that was read</field>
+			<field type="char[8]" name="name">Parameter name</field>
+			<field type="int32_t" name="value">Parameter value</field>
+		</message>
+		<message id="11" name="PARAM_FLOAT">
+			<description>Message to read/write parameters to microOS.</description>
+			<field type="char" name="ID">Partition ID - make this a general purpose message</field>
+			<field type="uint16_t" name="pointer">First register that was read</field>
+			<field type="char[8]" name="name">Parameter name</field>
+			<field type="float" name="value">Parameter value</field>
+		</message>
+		<message id="12" name="PARAM_STRING">
+			<description>Message to read/write parameters to microOS.</description>
+			<field type="char" name="ID">Partition ID - make this a general purpose message</field>
+			<field type="uint16_t" name="pointer">First register that was read</field>
+			<field type="char[8]" name="name">Parameter name</field>
+			<field type="char[32]" name="value">Parameter value</field>
+		</message>
+		<message id="13" name="PARAM_DATA">
+			<description>Message to read/write parameters to microOS.</description>
+			<field type="char" name="ID">Partition ID - make this a general purpose message</field>
+			<field type="uint16_t" name="pointer">First register that was read</field>
+			<field type="char[8]" name="name">Parameter name</field>
+			<field type="uint8_t[32]" name="value">Parameter value</field>
+		</message>
 	</messages>
 </mavlink>
