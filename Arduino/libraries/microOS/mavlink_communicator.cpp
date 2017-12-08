@@ -87,23 +87,14 @@ void MavlinkCommunicator::sendEvent(uint16_t event)
 void MavlinkCommunicator::handleEvent(uint16_t event)
 {
 	//put some microOS related events here
-	/*switch(event){
-		case 1000:
-			System.println("Button 1 pressed.");
-			break;
-
-		case 1001:
-			System.println("Button 2 pressed.");
-			break;
-
-		case 1002:
-			System.println("Button 3 pressed.");
-			break;
-
-		case 1003:
-			System.println("Button 4 pressed.");
-			break;
-	}*/
+	switch(event) {
+	    case 100: {
+            System.sendAllParameters();
+            break; }
+        case 101: {
+            System.storeAllParameters();
+            break; }
+	}
 }
 
 void MavlinkCommunicator::handlePartition(const mavlink_partition_t &partition)
@@ -117,6 +108,26 @@ void MavlinkCommunicator::sendPrint(const char *text)
 	mavlink_msg_print_pack(_id, 0, &msg, text);
 
 	sendMessage(msg);
+}
+
+void MavlinkCommunicator::sendIntParam(const String& name, const uint16_t offset, const int32_t value)
+{
+    mavlink_message_t msg;
+    char name_[8];
+    name.toCharArray(name_,8);
+    mavlink_msg_param_int_pack(_id, 0, &msg, 0, offset, name_, value);
+
+    sendMessage(msg);
+}
+
+void MavlinkCommunicator::sendFloatParam(const String& name, const uint16_t offset, const float value)
+{
+    mavlink_message_t msg;
+    char name_[8];
+    name.toCharArray(name_,8);
+    mavlink_msg_param_float_pack(_id, 0, &msg, 0, offset, name_, value);
+
+    sendMessage(msg);
 }
 
 bool MavlinkCommunicator::handleMessage(mavlink_message_t &msg)
@@ -143,7 +154,6 @@ bool MavlinkCommunicator::handleMessage(mavlink_message_t &msg)
 			mavlink_msg_event_decode(&msg,&event);
 
 			handleEvent(event.type);
-			//System.println("Received event message.");
 			break;}
 			
 		case MAVLINK_MSG_ID_PARTITION:{
@@ -152,6 +162,18 @@ bool MavlinkCommunicator::handleMessage(mavlink_message_t &msg)
 
 			handlePartition(partition);
 			break;}
+
+        case MAVLINK_MSG_ID_PARAM_INT:{
+            mavlink_param_int_t param_int;
+            mavlink_msg_param_int_decode(&msg,&param_int);
+            System.intStorage()->setValue(param_int.name, param_int.value);
+            break;}
+
+        case MAVLINK_MSG_ID_PARAM_FLOAT:{
+            mavlink_param_float_t param_float;
+            mavlink_msg_param_float_decode(&msg,&param_float);
+            System.floatStorage()->setValue(param_float.name, param_float.value);
+            break;}
 
 		/*case INTERESTING_MSG_ID:{
 			//do something with the message

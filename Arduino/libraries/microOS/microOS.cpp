@@ -103,6 +103,9 @@ void MicroOS::start(const start_t mode)
 		_communicator = new MavlinkCommunicator(45,20,_hal);
 	_communicator->init();
 
+    // Read all data from the eeprom
+    loadAllParameters();
+
 	// Add the different standard threads
 	if((_config & MICROOS_SLOW_DISABLE) == 0)
 		addThread(BELOWNORMAL, MICROOS_SLOW_THREAD_PERIOD, &microOSSlowLoop, false, MICROOS_SLOW_THREAD_ID);
@@ -157,7 +160,7 @@ void MicroOS::run(const system_run_t mode)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ///
-/// MicroOS HAL & Communicator getters
+/// MicroOS HAL & Communicator & Storage
 ///
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -169,6 +172,16 @@ HALBase* MicroOS::hal()
 CommunicatorInterface* MicroOS::communicator()
 {
 	return _communicator;
+}
+
+Storagei* MicroOS::intStorage()
+{
+    return &_int_storage;
+}
+
+Storagef* MicroOS::floatStorage()
+{
+    return &_float_storage;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -302,6 +315,34 @@ void MicroOS::sendAllThreadInfo(void)
 {
 	for(uint8_t k=0;k<_thread_count;k++)
 		_communicator->sendThreadInfo(_threads[k]->getID(), _threads[k]->getPriority(), _threads[k]->getDuration(), _threads[k]->getLatency(), _threads[k]->getTotalDuration(), _threads[k]->getTotalLatency(), _threads[k]->getNumberOfExecutions());
+}
+
+void MicroOS::sendAllParameters(void)
+{
+    forward_iterator<Parami*> i = _int_storage.begin();
+    while(i.has_next()) {
+        _communicator->sendIntParam(i.peek_next()->name(), i.peek_next()->address(), i.peek_next()->value());
+        i.next();
+    }
+
+    forward_iterator<Paramf*> j = _float_storage.begin();
+    while(j.has_next()) {
+        _communicator->sendFloatParam(j.peek_next()->name(), j.peek_next()->address(), j.peek_next()->value());
+        j.next();
+    }
+}
+
+void MicroOS::storeAllParameters(void)
+{
+    _int_storage.store();
+    _float_storage.store();
+    System.println(F("Saving to eeprom"));
+}
+
+void MicroOS::loadAllParameters(void)
+{
+    _int_storage.load();
+    _float_storage.load();
 }
 
 float* MicroOS::getGPinFloat(void)

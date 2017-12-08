@@ -14,6 +14,7 @@
 #include "communicator_interface.h"
 #include "mavlink_communicator.h"
 #include "thread.h"
+#include "storage.h"
 
 /*Defines with respect to the automatic threads: onboard and communication */
 
@@ -97,6 +98,8 @@ private:
 	
 	HALBase*				_hal;
 	CommunicatorInterface*	_communicator;
+    Storagei                _int_storage;
+    Storagef                _float_storage;
 	uint8_t					_config;
 	uint8_t					_slowhook_splitcounter;
 	
@@ -113,6 +116,8 @@ public:
 	
 	HALBase*				hal();
 	CommunicatorInterface*	communicator();
+    Storagei*               intStorage();
+    Storagef*               floatStorage();
 	
 	uint8_t addThread(priority_t priority, uint32_t period, int (*Fcn)(), bool start, uint8_t ID=0);
 	uint8_t addThread(Thread *thread);
@@ -123,6 +128,9 @@ public:
 	void handleSystemRequest(void);
     void sendNextThreadInfo(void);
     void sendAllThreadInfo(void);
+    void sendAllParameters(void);
+    void storeAllParameters(void);
+    void loadAllParameters(void);
 
 #ifndef MICROOS_NOPRINT
 	void write();

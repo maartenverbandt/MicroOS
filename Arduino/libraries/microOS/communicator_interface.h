@@ -18,6 +18,8 @@ public:
 	virtual void sendGPIO();
 	virtual void sendEvent(uint16_t event);
 	virtual void sendPrint(const char *text);
+    virtual void sendIntParam(const String& name, const uint16_t offset, const int32_t value);
+    virtual void sendFloatParam(const String& name, const uint16_t offset, const float value);
 	//virtual void sendHwinfo()
 };
 

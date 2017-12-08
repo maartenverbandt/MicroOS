@@ -35,13 +35,15 @@ public:
 	virtual void receive();
 	virtual void transmit();
 
-	void sendHeartbeat();
-	void sendThreadInfo(uint8_t ID, uint8_t priority,
+	virtual void sendHeartbeat();
+	virtual void sendThreadInfo(uint8_t ID, uint8_t priority,
 						uint32_t duration, uint32_t latency, 
 						uint32_t total_duration, uint32_t total_latency, uint32_t number_of_executions);
-	void sendGPIO();
-	void sendEvent(uint16_t event);
-	void sendPrint(const char *text);
+	virtual void sendGPIO();
+	virtual void sendEvent(uint16_t event);
+	virtual void sendPrint(const char *text);
+    virtual void sendIntParam(const String& name, const uint16_t offset, const int32_t value);
+    virtual void sendFloatParam(const String& name, const uint16_t offset, const float value);
 };
 
 #endif //MAVLINK_COMMUNICATOR_H
