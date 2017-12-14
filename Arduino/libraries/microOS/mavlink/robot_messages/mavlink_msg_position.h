@@ -14,19 +14,22 @@ typedef struct __mavlink_position_t
  int16_t x_act; ///< x actuator [mrad].
  int16_t y_act; ///< y actuator [mrad]
  int16_t z_act; ///< z actuator [mrad]
+ int16_t x_cont; ///< x controller output [mrad].
+ int16_t y_cont; ///< y controller output [mrad]
+ int16_t z_cont; ///< z controller output [mrad]
 } mavlink_position_t;
 
-#define MAVLINK_MSG_ID_POSITION_LEN 34
-#define MAVLINK_MSG_ID_53_LEN 34
+#define MAVLINK_MSG_ID_POSITION_LEN 40
+#define MAVLINK_MSG_ID_53_LEN 40
 
-#define MAVLINK_MSG_ID_POSITION_CRC 171
-#define MAVLINK_MSG_ID_53_CRC 171
+#define MAVLINK_MSG_ID_POSITION_CRC 27
+#define MAVLINK_MSG_ID_53_CRC 27
 
 
 
 #define MAVLINK_MESSAGE_INFO_POSITION { \
 	"POSITION", \
-	10, \
+	13, \
 	{  { "time", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_position_t, time) }, \
          { "x", NULL, MAVLINK_TYPE_INT32_T, 0, 4, offsetof(mavlink_position_t, x) }, \
          { "y", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_position_t, y) }, \
@@ -37,6 +40,9 @@ typedef struct __mavlink_position_t
          { "x_act", NULL, MAVLINK_TYPE_INT16_T, 0, 28, offsetof(mavlink_position_t, x_act) }, \
          { "y_act", NULL, MAVLINK_TYPE_INT16_T, 0, 30, offsetof(mavlink_position_t, y_act) }, \
          { "z_act", NULL, MAVLINK_TYPE_INT16_T, 0, 32, offsetof(mavlink_position_t, z_act) }, \
+         { "x_cont", NULL, MAVLINK_TYPE_INT16_T, 0, 34, offsetof(mavlink_position_t, x_cont) }, \
+         { "y_cont", NULL, MAVLINK_TYPE_INT16_T, 0, 36, offsetof(mavlink_position_t, y_cont) }, \
+         { "z_cont", NULL, MAVLINK_TYPE_INT16_T, 0, 38, offsetof(mavlink_position_t, z_cont) }, \
          } \
 }
 
@@ -57,10 +63,13 @@ typedef struct __mavlink_position_t
  * @param x_act x actuator [mrad].
  * @param y_act y actuator [mrad]
  * @param z_act z actuator [mrad]
+ * @param x_cont x controller output [mrad].
+ * @param y_cont y controller output [mrad]
+ * @param z_cont z controller output [mrad]
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_position_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint32_t time, int32_t x, int32_t y, int32_t z, int32_t x_cmd, int32_t y_cmd, int32_t z_cmd, int16_t x_act, int16_t y_act, int16_t z_act)
+						       uint32_t time, int32_t x, int32_t y, int32_t z, int32_t x_cmd, int32_t y_cmd, int32_t z_cmd, int16_t x_act, int16_t y_act, int16_t z_act, int16_t x_cont, int16_t y_cont, int16_t z_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_POSITION_LEN];
@@ -74,6 +83,9 @@ static inline uint16_t mavlink_msg_position_pack(uint8_t system_id, uint8_t comp
 	_mav_put_int16_t(buf, 28, x_act);
 	_mav_put_int16_t(buf, 30, y_act);
 	_mav_put_int16_t(buf, 32, z_act);
+	_mav_put_int16_t(buf, 34, x_cont);
+	_mav_put_int16_t(buf, 36, y_cont);
+	_mav_put_int16_t(buf, 38, z_cont);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_POSITION_LEN);
 #else
@@ -88,6 +100,9 @@ static inline uint16_t mavlink_msg_position_pack(uint8_t system_id, uint8_t comp
 	packet.x_act = x_act;
 	packet.y_act = y_act;
 	packet.z_act = z_act;
+	packet.x_cont = x_cont;
+	packet.y_cont = y_cont;
+	packet.z_cont = z_cont;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_POSITION_LEN);
 #endif
@@ -116,11 +131,14 @@ static inline uint16_t mavlink_msg_position_pack(uint8_t system_id, uint8_t comp
  * @param x_act x actuator [mrad].
  * @param y_act y actuator [mrad]
  * @param z_act z actuator [mrad]
+ * @param x_cont x controller output [mrad].
+ * @param y_cont y controller output [mrad]
+ * @param z_cont z controller output [mrad]
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_position_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint32_t time,int32_t x,int32_t y,int32_t z,int32_t x_cmd,int32_t y_cmd,int32_t z_cmd,int16_t x_act,int16_t y_act,int16_t z_act)
+						           uint32_t time,int32_t x,int32_t y,int32_t z,int32_t x_cmd,int32_t y_cmd,int32_t z_cmd,int16_t x_act,int16_t y_act,int16_t z_act,int16_t x_cont,int16_t y_cont,int16_t z_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_POSITION_LEN];
@@ -134,6 +152,9 @@ static inline uint16_t mavlink_msg_position_pack_chan(uint8_t system_id, uint8_t
 	_mav_put_int16_t(buf, 28, x_act);
 	_mav_put_int16_t(buf, 30, y_act);
 	_mav_put_int16_t(buf, 32, z_act);
+	_mav_put_int16_t(buf, 34, x_cont);
+	_mav_put_int16_t(buf, 36, y_cont);
+	_mav_put_int16_t(buf, 38, z_cont);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_POSITION_LEN);
 #else
@@ -148,6 +169,9 @@ static inline uint16_t mavlink_msg_position_pack_chan(uint8_t system_id, uint8_t
 	packet.x_act = x_act;
 	packet.y_act = y_act;
 	packet.z_act = z_act;
+	packet.x_cont = x_cont;
+	packet.y_cont = y_cont;
+	packet.z_cont = z_cont;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_POSITION_LEN);
 #endif
@@ -170,7 +194,7 @@ static inline uint16_t mavlink_msg_position_pack_chan(uint8_t system_id, uint8_t
  */
 static inline uint16_t mavlink_msg_position_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_position_t* position)
 {
-	return mavlink_msg_position_pack(system_id, component_id, msg, position->time, position->x, position->y, position->z, position->x_cmd, position->y_cmd, position->z_cmd, position->x_act, position->y_act, position->z_act);
+	return mavlink_msg_position_pack(system_id, component_id, msg, position->time, position->x, position->y, position->z, position->x_cmd, position->y_cmd, position->z_cmd, position->x_act, position->y_act, position->z_act, position->x_cont, position->y_cont, position->z_cont);
 }
 
 /**
@@ -184,7 +208,7 @@ static inline uint16_t mavlink_msg_position_encode(uint8_t system_id, uint8_t co
  */
 static inline uint16_t mavlink_msg_position_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_position_t* position)
 {
-	return mavlink_msg_position_pack_chan(system_id, component_id, chan, msg, position->time, position->x, position->y, position->z, position->x_cmd, position->y_cmd, position->z_cmd, position->x_act, position->y_act, position->z_act);
+	return mavlink_msg_position_pack_chan(system_id, component_id, chan, msg, position->time, position->x, position->y, position->z, position->x_cmd, position->y_cmd, position->z_cmd, position->x_act, position->y_act, position->z_act, position->x_cont, position->y_cont, position->z_cont);
 }
 
 /**
@@ -201,10 +225,13 @@ static inline uint16_t mavlink_msg_position_encode_chan(uint8_t system_id, uint8
  * @param x_act x actuator [mrad].
  * @param y_act y actuator [mrad]
  * @param z_act z actuator [mrad]
+ * @param x_cont x controller output [mrad].
+ * @param y_cont y controller output [mrad]
+ * @param z_cont z controller output [mrad]
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_position_send(mavlink_channel_t chan, uint32_t time, int32_t x, int32_t y, int32_t z, int32_t x_cmd, int32_t y_cmd, int32_t z_cmd, int16_t x_act, int16_t y_act, int16_t z_act)
+static inline void mavlink_msg_position_send(mavlink_channel_t chan, uint32_t time, int32_t x, int32_t y, int32_t z, int32_t x_cmd, int32_t y_cmd, int32_t z_cmd, int16_t x_act, int16_t y_act, int16_t z_act, int16_t x_cont, int16_t y_cont, int16_t z_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_POSITION_LEN];
@@ -218,6 +245,9 @@ static inline void mavlink_msg_position_send(mavlink_channel_t chan, uint32_t ti
 	_mav_put_int16_t(buf, 28, x_act);
 	_mav_put_int16_t(buf, 30, y_act);
 	_mav_put_int16_t(buf, 32, z_act);
+	_mav_put_int16_t(buf, 34, x_cont);
+	_mav_put_int16_t(buf, 36, y_cont);
+	_mav_put_int16_t(buf, 38, z_cont);
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION, buf, MAVLINK_MSG_ID_POSITION_LEN, MAVLINK_MSG_ID_POSITION_CRC);
@@ -236,6 +266,9 @@ static inline void mavlink_msg_position_send(mavlink_channel_t chan, uint32_t ti
 	packet.x_act = x_act;
 	packet.y_act = y_act;
 	packet.z_act = z_act;
+	packet.x_cont = x_cont;
+	packet.y_cont = y_cont;
+	packet.z_cont = z_cont;
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION, (const char *)&packet, MAVLINK_MSG_ID_POSITION_LEN, MAVLINK_MSG_ID_POSITION_CRC);
@@ -253,7 +286,7 @@ static inline void mavlink_msg_position_send(mavlink_channel_t chan, uint32_t ti
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_position_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint32_t time, int32_t x, int32_t y, int32_t z, int32_t x_cmd, int32_t y_cmd, int32_t z_cmd, int16_t x_act, int16_t y_act, int16_t z_act)
+static inline void mavlink_msg_position_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint32_t time, int32_t x, int32_t y, int32_t z, int32_t x_cmd, int32_t y_cmd, int32_t z_cmd, int16_t x_act, int16_t y_act, int16_t z_act, int16_t x_cont, int16_t y_cont, int16_t z_cont)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char *buf = (char *)msgbuf;
@@ -267,6 +300,9 @@ static inline void mavlink_msg_position_send_buf(mavlink_message_t *msgbuf, mavl
 	_mav_put_int16_t(buf, 28, x_act);
 	_mav_put_int16_t(buf, 30, y_act);
 	_mav_put_int16_t(buf, 32, z_act);
+	_mav_put_int16_t(buf, 34, x_cont);
+	_mav_put_int16_t(buf, 36, y_cont);
+	_mav_put_int16_t(buf, 38, z_cont);
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION, buf, MAVLINK_MSG_ID_POSITION_LEN, MAVLINK_MSG_ID_POSITION_CRC);
@@ -285,6 +321,9 @@ static inline void mavlink_msg_position_send_buf(mavlink_message_t *msgbuf, mavl
 	packet->x_act = x_act;
 	packet->y_act = y_act;
 	packet->z_act = z_act;
+	packet->x_cont = x_cont;
+	packet->y_cont = y_cont;
+	packet->z_cont = z_cont;
 
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION, (const char *)packet, MAVLINK_MSG_ID_POSITION_LEN, MAVLINK_MSG_ID_POSITION_CRC);
@@ -401,6 +440,36 @@ static inline int16_t mavlink_msg_position_get_z_act(const mavlink_message_t* ms
 }
 
 /**
+ * @brief Get field x_cont from position message
+ *
+ * @return x controller output [mrad].
+ */
+static inline int16_t mavlink_msg_position_get_x_cont(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_int16_t(msg,  34);
+}
+
+/**
+ * @brief Get field y_cont from position message
+ *
+ * @return y controller output [mrad]
+ */
+static inline int16_t mavlink_msg_position_get_y_cont(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_int16_t(msg,  36);
+}
+
+/**
+ * @brief Get field z_cont from position message
+ *
+ * @return z controller output [mrad]
+ */
+static inline int16_t mavlink_msg_position_get_z_cont(const mavlink_message_t* msg)
+{
+	return _MAV_RETURN_int16_t(msg,  38);
+}
+
+/**
  * @brief Decode a position message into a struct
  *
  * @param msg The message to decode
@@ -419,6 +488,9 @@ static inline void mavlink_msg_position_decode(const mavlink_message_t* msg, mav
 	position->x_act = mavlink_msg_position_get_x_act(msg);
 	position->y_act = mavlink_msg_position_get_y_act(msg);
 	position->z_act = mavlink_msg_position_get_z_act(msg);
+	position->x_cont = mavlink_msg_position_get_x_cont(msg);
+	position->y_cont = mavlink_msg_position_get_y_cont(msg);
+	position->z_cont = mavlink_msg_position_get_z_cont(msg);
 #else
 	memcpy(position, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_POSITION_LEN);
 #endif

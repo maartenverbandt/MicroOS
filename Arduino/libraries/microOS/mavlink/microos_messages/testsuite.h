@@ -421,7 +421,7 @@ static void mavlink_test_param_string(uint8_t system_id, uint8_t component_id, m
 		17235,
 	}'C',
 	}"DEFGHIJ",
-	}"LMNOPQR",
+	}"LMNOPQRSTUVWXYZABCDEFGHIJKLMNOP",
 	};
 	mavlink_param_string_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -429,7 +429,7 @@ static void mavlink_test_param_string(uint8_t system_id, uint8_t component_id, m
         	packet1.ID = packet_in.ID;
         
         	mav_array_memcpy(packet1.name, packet_in.name, sizeof(char)*8);
-        	mav_array_memcpy(packet1.value, packet_in.value, sizeof(char)*8);
+        	mav_array_memcpy(packet1.value, packet_in.value, sizeof(char)*32);
         
 
         memset(&packet2, 0, sizeof(packet2));
