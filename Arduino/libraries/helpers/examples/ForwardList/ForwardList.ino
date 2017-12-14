@@ -26,6 +26,38 @@ void setup() {
     }
     Serial.println("");
 
+    // test push back
+    forward_list<int> l2;
+    l2.push_back(10);
+    l2.push_back(20);
+    
+    if(l2.size() != 2) {
+        Serial.print("Error: list size should be 2 but is: "); Serial.println(l2.size());
+    }
+    
+    l2.push_back(30);
+    if(l2.size() != 3) {
+        Serial.print("Error: list size should be 3 but is: "); Serial.println(l2.size());
+    }
+
+    // iterate list
+    forward_iterator<int> i2 = l2.begin();
+    Serial.println("The expected print is: 10;20;30;");
+    while(i2.has_next()) {
+        Serial.print(i2.next()); Serial.print(";");
+    }
+    Serial.println("");
+
+    //test pop front
+    l2.pop_front();
+    i2 = l2.begin();
+    Serial.println("The expected print is: 20;30;");
+    while(i2.has_next()) {
+        Serial.print(i2.next()); Serial.print(";");
+    }
+
+    Serial.println("");
+
     // done
     Serial.println("Testing done");
 }
