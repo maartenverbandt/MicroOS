@@ -120,13 +120,13 @@ void MicroOS::start(const start_t mode)
 			}
 			break;
 		case REGULAR:{
-			uint32_t interval, minimum_period, scheduling_time;
+		  uint32_t minimum_period = MICROOS_FAST_THREAD_PERIOD;
 			for(uint8_t k=0;k<_thread_count;k++){
 				if(_threads[k]->getPeriod() < minimum_period)
 					minimum_period = _threads[k]->getPeriod();
 			}
-			interval = minimum_period/_thread_count;
-			scheduling_time = micros();
+			uint32_t interval = minimum_period/_thread_count;
+			uint32_t scheduling_time = micros();
 			for(uint8_t k=0;k<_thread_count;k++){
 				_threads[k]->startRegular(scheduling_time);
 				scheduling_time += interval;
