@@ -1,8 +1,10 @@
 #ifndef STORAGE_H
 #define STORAGE_H
 
+#include <Arduino.h>
 #include <forward_list.h>
 #include <memory_pointer.h>
+#include <EEPROM.h>
 
 template<typename T> class Parameter {
     private:

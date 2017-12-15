@@ -1,3 +1,4 @@
+#include <EEPROM.h>
 #include <microOS.h>
 
 void setup()

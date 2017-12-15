@@ -1,4 +1,5 @@
-#include "storage.h"
+#include <storage.h>
+#include <EEPROM.h>
 
 Storage<float> fstorage;
 Storage<uint8_t> ustorage;
